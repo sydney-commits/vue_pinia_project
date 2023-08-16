@@ -1,12 +1,10 @@
 <template>
   <div>
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
 
-    <h2>Posts Page</h2>
+    <h2>News Posts</h2>
+
+    <div v-if="posts?.length === 0">Loading Products</div>
 
     <ul>
       <li v-for="post in posts" :key="post.id">
@@ -21,22 +19,23 @@
 <style scoped></style>
 
 <script>
-import { usePostStore } from "../stores/postStore.js";
+import { usePostStore } from "../stores/postStore";
+
 import { onMounted } from "vue";
 
 export default {
+  name: "PostList",
   setup() {
     const postStore = usePostStore();
 
-    // Fetch posts when component is mounted
-    onMounted(() => {
-      postStore.fetchPosts();
-    });
+    //const posts = postStore.fetchPosts();
 
+    postStore.fetchPosts();
     return {
+      // posts,
       posts: postStore.posts,
-      addPost: postStore.addPost,
-      // ... any other methods or computed properties
+      error: postStore.error,
+      loading: postStore.loading,
     };
   },
 };
